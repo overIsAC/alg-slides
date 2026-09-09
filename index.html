@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="8oE69YFuszKztb5Y9y7fdv">
+<head data-page-node-id="dFwR7UCyuCcVjl5h1RZeYl">
+  <meta charset="utf-8" data-page-node-id="vdnX20M9ns8wePcgCdhfrl">
+  <meta name="viewport" content="width=device-width, initial-scale=1" data-page-node-id="5102Pv3hFkJAa4sQedFW9u">
+  <title>算法课件演示</title>
+  <link rel="stylesheet" href="assets/katex/katex.min.css" data-page-node-id="MTCJvikG18xwPs2oEboTN2">
+  <link rel="stylesheet" href="assets/app.css" data-page-node-id="KBVeFBtZ7qyfGRiYUq84GI">
+</head>
+<body data-page-node-id="HyGAMa3R0x0LSm9ZBFFi2y">
+
+<div class="shell" id="shell" data-page-node-id="RdojinkhW2jUnlVnsG2ENL">
+
+  <!-- ======================= 左：多级文件树 ======================= -->
+  <aside class="side" data-page-node-id="xTAwkaCjq9g2FnkD0jcl8g">
+    <div class="side-brand" data-page-node-id="N469U4Zg0rH3M6d41AHdwE">
+      <div class="brand-logo" data-page-node-id="xvpNXPP3xzpBaQoXtTDFfJ">速</div>
+      <div data-page-node-id="YruhidZ3xC44f2aja6Mart">
+        <div class="brand-t" data-page-node-id="OlT9O43nVzU7oMJfUcYfR4">算法课件演示</div>
+        <div class="brand-s" data-page-node-id="x6zPoAlHAry0fQzKq27iar">lecture · Obsidian 笔记 → PPT 式课件</div>
+      </div>
+    </div>
+    <div class="side-search" data-page-node-id="8KMUJB2hH6yXy75fborMiV">
+      <input id="sideSearch" type="text" placeholder="🔍 搜索笔记标题…" data-page-node-id="0p4BwqlFVyFVGRLGxo0BYP">
+    </div>
+    <div class="side-tree" data-page-node-id="dtDqryOQFyzzTiyILOrGEX"></div>
+    <div class="side-foot" data-page-node-id="gJ93vir3VkIQsakTHUEnqH">
+      <span data-page-node-id="jD4hNVPOrrtcquZp9ofcFM"><span id="statNotes" data-page-node-id="UKSCBhF0tMCAY226fppFQN">0 篇</span> · <span id="statDecks" data-page-node-id="GiLcCHJRjEAj2u4rfGbuAm">0 个课件</span></span>
+      <span data-page-node-id="HAXho71sFAPQAHEMDTGBvV"><kbd data-page-node-id="tMxKy2BtqSrydGibtLwCx2">←</kbd><kbd data-page-node-id="ss7k9kVW3Uu8ev0cvNN2Op">→</kbd> 翻页</span>
+    </div>
+  </aside>
+
+  <!-- ======================= 右：主区域 ======================= -->
+  <main class="main" data-page-node-id="uSWkrSkZud1r5LuqLG5OOr">
+    <div class="topbar" data-page-node-id="8zyKKsdi2KugXQ1ti7bH51">
+      <div class="path-chip" data-page-node-id="myNLfFpKSyitAlbMFQuGQ4">
+        <span id="chipFolder" data-page-node-id="QGZuZvlku0IbZ76CZXXqCx"></span><span class="cur" id="chipFile" data-page-node-id="jXce2PwU4ibb072BGsS7oa">请从左侧选择笔记</span>
+      </div>
+      <div class="mode-seg" data-page-node-id="1rsPuZpbWwQYrOeWfSsmAz">
+        <button id="modeDeck" disabled data-page-node-id="4QTnMvr5WihJ65SEqGxCBe">🎞 课件</button>
+        <button id="modeNote" disabled data-page-node-id="qJYC8BU7bwwjMmosITD2Wa">📄 笔记</button>
+      </div>
+      <span class="badge-pages" id="badgeDeck" style="display:none" data-page-node-id="qjJwJBaW4sFwKmxmRGo2YP"></span>
+      <div class="top-spacer" data-page-node-id="7ihsbOD3HKaRID321EPmyh"></div>
+      <button class="icon-btn" id="btnFull" title="全屏 / 退出全屏（F）" data-page-node-id="d155AmPSfkWT5WG3kYeW82">⛶</button>
+      <button class="icon-btn" id="btnSide" title="收起 / 展开左侧目录（B）" data-page-node-id="Crxz9mHlAGYiLgRTLYrB8H">☰</button>
+      <span class="credit" data-page-node-id="uKXOLnd2NUitJnzcS2fQZk">by <a href="https://www.luogu.com.cn/user/183324" target="_blank" rel="noopener" data-page-node-id="gL7WX0zfFZCQSdvHZiOhR0">acidlemon</a></span>
+    </div>
+
+    <div class="stage-area" id="stageArea" data-page-node-id="KzsaqpEQwzo4ZdZeRvang8">
+      <div class="progress" data-page-node-id="78TyhKdjFuQ1twXyfFJeH7"><i id="progFill" data-page-node-id="oEYwAWl75wspcZ9Gz1hQtx"></i></div>
+
+      <!-- 课件翻页（多张 .page） -->
+      <div class="stage-track" id="pageHost" data-page-node-id="sdO3OAzY09SYgICgRjK6ws"></div>
+
+      <!-- 原始笔记（长文滚动） -->
+      <div class="article-wrap" id="articleWrap" data-page-node-id="f2iEBtiwa6r45oDhRBrIJJ"></div>
+
+      <!-- 分页器 -->
+      <div class="pager" id="pager" style="display:none" data-page-node-id="H228TqJTvZDAJdt7q66hnU">
+        <button class="pg-btn" id="btnPrev" title="上一页" data-page-node-id="KBFL6ZnuwaOEFJzVJuKkKx">‹</button>
+        <span class="pg-count" id="pgCount" title="点击页码可输入跳转" data-page-node-id="htZ0Ek9flkPx6mtR3UATgo"></span>
+        <button class="pg-btn" id="btnNext" title="下一页" data-page-node-id="GSGNkzljXBoszLxldT1Vpy">›</button>
+        <span class="pg-hint" data-page-node-id="j6QaHXEFFksCdyHbvALWKD">空格 / ← → / PgUp PgDn 翻页 · F 全屏</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- 数学公式：KaTeX 已本地化到 assets/katex，离线可用 -->
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/contrib/auto-render.min.js"></script>
+<script src="data/notes.js"></script>
+<script src="data/decks.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
