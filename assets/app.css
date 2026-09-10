@@ -480,6 +480,23 @@ button { font-family: inherit; }
 .pair-formula .val { color: var(--good); font-weight: 700; }
 .pair-note { margin-top: 6px; font-size: 12.5px; color: var(--faint); min-height: 16px; }
 
+/* ---------------- 光速幂：分块定位演示（demo-lsp） ---------------- */
+.lsp-stage { max-height: 300px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.lsp-tbl { border-collapse: collapse; font-size: 12.5px; }
+.lsp-tbl th, .lsp-tbl td { border: 1px solid #e6e9f2; padding: 3px 7px; text-align: center; white-space: nowrap; }
+.lsp-corner { background: #f7f8fc; color: var(--faint); font-size: 11px; font-weight: 700; font-family: var(--mono); }
+/* 没被选中的行/列、格子都淡下去，选中的一整行一整列 + 那一格高亮 */
+.lsp-h { background: #f7f8fc; color: var(--ink-2); font-weight: 600; opacity: .42; transition: opacity .18s; }
+.lsp-h.sel { opacity: 1; background: var(--accent-soft); color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+.lsp-cell { background: #fff; color: var(--ink-2); opacity: .35; transition: opacity .18s; }
+.lsp-cell.sel { opacity: 1; background: var(--accent-soft); color: var(--accent); font-weight: 700; box-shadow: inset 0 0 0 2px var(--accent); }
+.lsp-tag { display: block; margin-top: 1px; font-size: 10px; font-family: var(--mono); color: var(--faint); }
+.lsp-h.sel .lsp-tag { color: var(--accent); }
+.lsp-fin { display: none; margin-top: 11px; padding: 10px 13px; border-radius: 10px; background: #f6f7ff; border: 1px solid var(--line); font-size: 13px; line-height: 1.8; }
+.lsp-fin.show { display: block; animation: rowIn .4s; }
+.lsp-fin .ok { color: var(--good); font-weight: 700; }
+.lsp-eq { margin: 4px 0; font-size: 14px; }
+
 /* ---------------- Article view ---------------- */
 .article-wrap { position: absolute; inset: 0; overflow: auto; padding: 24px 30px 90px; background: var(--stagebg); display: none; }
 .article-wrap.active { display: block; }
