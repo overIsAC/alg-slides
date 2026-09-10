@@ -492,6 +492,8 @@ button { font-family: inherit; }
 .article-card h3 { font-size: 16px; margin: 18px 0 6px; color: #312e81; }
 .article-card h4 { font-size: 15px; margin: 14px 0 4px; }
 .article-card p { margin: 8px 0; }
+/* 连续空行占位块：高度由 build.py 内联 style 控制，自身不加外边距 */
+.article-card .blanks { margin: 0; }
 .article-card ul, .article-card ol { padding-left: 22px; margin: 8px 0; }
 .article-card li { margin: 4px 0; }
 .article-card table { border-collapse: collapse; margin: 12px 0; font-size: 13.5px; max-width: 100%; }
