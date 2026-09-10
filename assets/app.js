@@ -149,7 +149,8 @@
       '<span class="code-lang">' + langName + '</span>';
     var sc = document.createElement('div');
     sc.className = 'code-scroll';
-    var lines = String(code.text).replace(/\n+$/, '').split('\n');
+    // 末尾空行要保留（md 里有就照显示），不要 strip
+    var lines = String(code.text).split('\n');
     lines.forEach(function (ln, i) {
       var row = document.createElement('div');
       row.className = 'cl';
@@ -720,7 +721,7 @@
       '观看递归把 q^n 一层层折半、再乘回去的完整过程（可修改上方 q、n）。</div>';
   };
 
-  /* ================= 光速幂：分块定位（demo-lsp） =================
+  /* ================= 光速幂：预处理表（demo-lsp） =================
    * 行 = f1（零头 a^y，y = b mod B1），列 = f2（整块 a^{B1*x}，x = b/B1）。
    * 格子 (y, x) = a^{y + B1*x} = a^b，未选中的淡下去。
    */
@@ -731,7 +732,7 @@
       '  <label>B1（块大小 / 行数）</label><input id="lpB1" type="number" min="2" max="' + LSP_MAX + '" value="5">' +
       '  <label>B2（块数 / 列数）</label><input id="lpB2" type="number" min="2" max="' + LSP_MAX + '" value="5">' +
       '  <label>指数 b</label><input id="lpB" type="number" min="0" max="24" value="11">' +
-      '  <button class="dbtn primary" id="lpRun">▶ 定位</button>' +
+      '  <button class="dbtn primary" id="lpRun">▶ 生成表格</button>' +
       '  <button class="dbtn ghost" id="lpReset">↺ 重置</button>' +
       '  <span class="dstatus" id="lpSt"></span>' +
       '</div>' +
@@ -794,7 +795,7 @@
       renderMath(stage);
 
       fin.innerHTML =
-        '<div><b>✅ 定位结果：</b>把 <b>$b = ' + b + '$</b> 拆成 ' +
+        '<div><b>✅ 拆解结果：</b>把 <b>$b = ' + b + '$</b> 拆成 ' +
         '<span class="ok">$x = \\lfloor b/B1\\rfloor = ' + x + '$</span>（→ <code>f2[' + x + ']</code>）与 ' +
         '<span class="ok">$y = b \\bmod B1 = ' + y + '$</span>（→ <code>f1[' + y + ']</code>）</div>' +
         '<div class="lsp-eq">$a^{' + b + '} = a^{' + (b1 * x) + '} \\times a^{' + y + '} = $ <b>f2[' + x + '] × f1[' + y + ']</b></div>' +
