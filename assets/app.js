@@ -10,6 +10,48 @@
 
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var raf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+
+  /* ---------------- 轻提示 toast：显示约 2.2 秒后自动消失 ---------------- */
+  function toast(msg, kind) {
+    var host = document.getElementById('toastHost');
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'toastHost';
+      host.className = 'toast-host';
+      document.body.appendChild(host);
+    }
+    var el = document.createElement('div');
+    el.className = 'toast' + (kind ? ' toast-' + kind : '');
+    el.textContent = msg;
+    host.appendChild(el);
+    raf(function () { el.classList.add('show'); });
+    setTimeout(function () {
+      el.classList.remove('show');
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 240);
+    }, 2200);
+  }
+
+  /* throw 出来的既可能是字符串也可能是 Error，统一取成文字 */
+  function errText(e) {
+    if (typeof e === 'string') return e;
+    if (e && e.message) return e.message;
+    return String(e);
+  }
+
+  /* ---------------- 演示页输入框读取 + 校验 ----------------
+   * 空 / 非数字 / 小数 / 超范围 一律 throw，由调用处 catch 后弹 toast。
+   * rangeText 只用于提示文案；extra 是追加在范围后的补充说明。
+   */
+  function readInt(input, name, lo, hi, rangeText, extra) {
+    var raw = (input.value === null || input.value === undefined) ? '' : String(input.value).trim();
+    var tail = rangeText + (extra ? '（' + extra + '）' : '');
+    if (raw === '') throw name + '不能为空 —— 请填 ' + tail + ' 之间的整数';
+    if (!/^-?\d+$/.test(raw)) throw name + '只能是整数，不能填小数、字母或符号 —— 请填 ' + tail + ' 之间的整数';
+    var v = parseInt(raw, 10);
+    if (!(v >= lo && v <= hi)) throw name + '超出范围：需在 ' + tail + ' 之间';
+    return v;
+  }
 
   /* ---------------- 状态 ---------------- */
   var state = {
@@ -536,9 +578,8 @@
     });
 
     function parse() {
-      var q = parseInt(qIn.value, 10), n = parseInt(nIn.value, 10);
-      if (!(q >= 1 && q <= 1e9)) throw '底数 q 需在 1 ~ 10⁹ 之间';
-      if (!(n >= 0 && n <= 1e9)) throw '指数 n 需在 0 ~ 10⁹ 之间';
+      var q = readInt(qIn, '底数 q', 1, 1e9, '1 ~ 10⁹');
+      var n = readInt(nIn, '指数 n', 0, 1e9, '0 ~ 10⁹');
       return { q: q, n: n };
     }
 
@@ -628,7 +669,7 @@
     runB.addEventListener('click', function () {
       if (auto) { stopAll(); stB.textContent = '已暂停（点 ▶ 继续 / 单步推进）'; return; }
       var parsed;
-      try { parsed = parse(); } catch (e) { stB.textContent = e.message; return; }
+      try { parsed = parse(); } catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
       stage.innerHTML = '';
       fin.classList.remove('show');
       rows = buildRows(parsed.q, parsed.n);
@@ -650,7 +691,7 @@
       if (auto) stopAll();
       if (!rows.length) {
         try { var p2 = parse(); rows = buildRows(p2.q, p2.n); idx = 0; stB.textContent = '单步模式（每点一次走一步）'; }
-        catch (e) { stB.textContent = e.message; return; }
+        catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
       }
       if (!stepOnce() && rows.length) stB.textContent = '单步模式（重按 ▶ 重播）';
     });
@@ -718,9 +759,8 @@
     }
 
     function buildFrames() {
-      var q = parseInt(qIn.value, 10), n = parseInt(nIn.value, 10);
-      if (!(q >= 2 && q <= 99)) throw '底数 q 需在 2 ~ 99 之间';
-      if (!(n >= 1 && n <= 40)) throw '指数 n 需在 1 ~ 40 之间（太多屏幕放不下）';
+      var q = readInt(qIn, '底数 q', 2, 99, '2 ~ 99');
+      var n = readInt(nIn, '指数 n', 1, 40, '1 ~ 40', '太多屏幕放不下');
       frames = []; fidx = 0;
       stage.innerHTML = '';
       formula.innerHTML = '';
@@ -841,7 +881,7 @@
 
     runB.addEventListener('click', function () {
       if (auto) { stopAll(); stB.textContent = '已暂停（点 ▶ 继续）'; return; }
-      try { buildFrames(); } catch (e) { stB.textContent = e.message; return; }
+      try { buildFrames(); } catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
       token++;
       fidx = 0;
       auto = true;
@@ -860,7 +900,7 @@
       if (auto) stopAll();
       if (!frames.length) {
         try { buildFrames(); fidx = 0; stB.textContent = '单步模式（每点一次走一步）'; }
-        catch (e) { stB.textContent = e.message; return; }
+        catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
       }
       if (!stepOnce() && frames.length) stB.textContent = '单步模式（重按 ▶ 重播）';
     });
