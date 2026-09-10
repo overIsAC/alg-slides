@@ -94,6 +94,8 @@
     return neg ? '-' + out : out;
   }
   function approxPow(q, n) {
+    /* q = 0 时 log10(0) = -Infinity，位数会算成 -Infinity，这里直接特判 */
+    if (q === 0) return { digits: 1, mant: n > 0 ? 0 : 1 };
     var l = n * Math.log10(q);
     var digits = Math.floor(l) + 1;
     var mant = Math.pow(10, l - Math.floor(l));
@@ -108,6 +110,10 @@
     var qs = fmt(q);
     if (e <= 1) return qs;
     return qs + '<sup>' + e + '</sup>';
+  }
+  /* 需要“始终带上标指数”的场合用这个（expLabel 在 e<=1 时不显示指数） */
+  function expSup(q, e) {
+    return fmt(q) + '<sup>' + e + '</sup>';
   }
   function prettyBig(big) {
     var s = big.toString();
@@ -547,7 +553,7 @@
   DEMOS['demo-recursion'] = function (holder) {
     holder.innerHTML =
       '<div class="dctrl">' +
-      '  <label>底数 q</label><input id="rdQ" type="number" min="1" max="1000000000" value="5">' +
+      '  <label>底数 q</label><input id="rdQ" type="number" min="0" max="1000000000" value="5">' +
       '  <label>指数 n</label><input id="rdN" type="number" min="0" max="1000000000" value="22">' +
       '  <button class="dbtn primary" id="rdRun">▶ 自动演示</button>' +
       '  <button class="dbtn" id="rdStep">单步</button>' +
@@ -578,7 +584,7 @@
     });
 
     function parse() {
-      var q = readInt(qIn, '底数 q', 1, 1e9, '1 ~ 10⁹');
+      var q = readInt(qIn, '底数 q', 0, 1e9, '0 ~ 10⁹');
       var n = readInt(nIn, '指数 n', 0, 1e9, '0 ~ 10⁹');
       return { q: q, n: n };
     }
@@ -591,6 +597,12 @@
       if (n === 0) {
         out.push({ html: 'n = 0 → 递归出口直接返回 <span class="ok">1 % mod</span>' });
         out.push({ html: '<span class="cm">一次都不折半 —— 这就是“边界条件”。</span>' });
+        if (q === 0) out.push({ html: '<span class="cm">注意：数学上 0⁰ 没有定义，但快速幂代码实现会返回 1。</span>' });
+        return out;
+      }
+      if (n === 1) {
+        out.push({ html: 'n = 1 → 一进来就命中递归出口，直接返回 <span class="ok">' + fmt(q) + '</span>' });
+        out.push({ html: '<span class="cm">既不用折半、也不用回溯 —— 这是最短的一条路径。</span>' });
         return out;
       }
       out.push({ cls: 'rec-sep', html: '┌ 递归调用：从 ' + expLabel(q, n) + ' 开始一层层“折半”往下拆' });
@@ -705,8 +717,8 @@
   DEMOS['demo-pairing'] = function (holder) {
     holder.innerHTML =
       '<div class="dctrl">' +
-      '  <label>底数 q</label><input id="pdQ" type="number" min="2" max="99" value="5">' +
-      '  <label>指数 n（个数）</label><input id="pdN" type="number" min="1" max="40" value="11">' +
+      '  <label>底数 q</label><input id="pdQ" type="number" min="0" max="99" value="5">' +
+      '  <label>指数 n（个数）</label><input id="pdN" type="number" min="0" max="40" value="11">' +
       '  <button class="dbtn primary" id="pdRun">▶ 自动演示</button>' +
       '  <button class="dbtn" id="pdStep">单步</button>' +
       '  <button class="dbtn ghost" id="pdReset">↺ 重置</button>' +
@@ -759,11 +771,34 @@
     }
 
     function buildFrames() {
-      var q = readInt(qIn, '底数 q', 2, 99, '2 ~ 99');
-      var n = readInt(nIn, '指数 n', 1, 40, '1 ~ 40', '太多屏幕放不下');
+      var q = readInt(qIn, '底数 q', 0, 99, '0 ~ 99');
+      var n = readInt(nIn, '指数 n', 0, 40, '0 ~ 40', '太多屏幕放不下');
       frames = []; fidx = 0;
       stage.innerHTML = '';
       formula.innerHTML = '';
+
+      /* n = 0：一个 q 都没有，压根进不了配对循环，直接出结果 */
+      if (n === 0) {
+        frames.push({
+          cap: 'n = 0：一个 <b>' + fmt(q) + '</b> 都没有 —— 没有东西可以配对',
+          stage: '<div class="tok-row"><span class="tok">（空空的，一个都没有）</span></div>',
+          collect: []
+        });
+        frames.push({
+          cap: '🎉 什么都不用乘，结果直接就是 <b>1</b>',
+          stage: '<div class="tok-row"><span class="tok got">1</span></div>',
+          collect: [],
+          formula:
+            '<span class="ph">' + expSup(q, 0) + ' = 1</span>' +
+            '<div style="margin-top:8px;font-size:13px;line-height:1.8;color:#4b5563">' +
+            '取出区里<b>一个幂都没有</b>，指数和 = 0，正好等于原来的 <b>0</b>。<br>' +
+            '和循环代码对应：<code>n = 0</code> 时循环<b>一次都不进</b>，直接返回初始的 <code>ans = 1</code>。' +
+            (q === 0 ? '<br>注意：数学上 0⁰ 没有定义，但快速幂代码实现会返回 1。' : '') +
+            '</div>'
+        });
+        return;
+      }
+
       var tokens = [];
       for (var i = 0; i < n; i++) tokens.push({ exp: 1 });
       var collected = [];   // 取出区：每轮奇数“多出的 1 个”和最后剩下的 1 个，取出后一直保留、不再配对
@@ -809,8 +844,11 @@
 
       // 最后只剩 1 个，没法再配对：也把它放进取出区
       var lastExp = tokens[0].exp;
+      var lastCap = (n === 1)
+        ? '一开始只有 1 个 <b>' + expLabel(q, lastExp) + '</b>，一步都不用配对 → 直接放进取出区'
+        : '只剩 1 个 <b>' + expLabel(q, lastExp) + '</b>，没法再配对 → 最后也放进取出区';
       frames.push({
-        cap: '只剩 1 个 <b>' + expLabel(q, lastExp) + '</b>，没法再配对 → 最后也放进取出区',
+        cap: lastCap,
         stage: '<div class="tok-row">' + chipHtml(q, lastExp, 'loner') + '</div>' + keptRowHtml(q, collected),
         collect: collected.slice()
       });
@@ -824,13 +862,16 @@
       var est = approxPow(q, sum);
       if (est.digits <= 24) valHtml = ' = <span class="val">' + fmt(bigPow(q, sum).toString()) + '</span>';
       else valHtml = ' ≈ <span class="val">' + est.mant.toFixed(4) + ' × 10<sup>' + (est.digits - 1) + '</sup></span>';
+      /* 取出区只有 1 项时（如 n=1、n=2），别写成 “5 = 5 = 5” 这种重复式子 */
+      var headHtml = exps.length > 1
+        ? '<span class="ph">' + piecesHtml + '</span> <span class="sep2">= ' + expSup(q, sum) + '</span>'
+        : '<span class="ph">' + expSup(q, sum) + '</span>';
       frames.push({
         cap: '🎉 取出区凑齐了 —— 把它们全部乘起来：',
         stage: '<div class="tok-row">' + exps.map(function (e) { return chipHtml(q, e, 'got'); }).join('') + '</div>',
         collect: collected.slice(),
         formula:
-          '<span class="ph">' + piecesHtml + '</span>' +
-          ' <span class="sep2">= ' + expLabel(q, sum) + '</span>' + valHtml +
+          headHtml + valHtml +
           '<div style="margin-top:8px;font-size:13px;line-height:1.8;color:#4b5563">' +
           '取出区里的幂指数 {<b>' + exps.join(', ') + '</b>} 加起来正好等于原来的 <b>' + n + '</b>，全程一个都没丢。<br>' +
           '和循环代码对应：个数是<b>奇数</b>就取出当前这个幂（对应 <code>ans *= q</code>），' +
@@ -869,12 +910,13 @@
       return true;
     }
     function preview() {
-      var q = parseInt(qIn.value, 10), n = parseInt(nIn.value, 10);
+      var q = parseInt(qIn.value, 10) || 0, n = parseInt(nIn.value, 10) || 0;
       var html = '';
       for (var i = 0; i < Math.min(n, 40); i++) html += chipHtml(q, 1);
-      stage.innerHTML = '<div class="pair-round-cap">初始：<b>' + n + '</b> 个 ' + q +
-        ' —— 要算 <b>' + expLabel(q, n) + '</b>。点 ▶ 自动演示，看它们一轮轮两两配对、数量减半。</div>' +
-        '<div class="tok-row">' + html + '</div>';
+      stage.innerHTML = '<div class="pair-round-cap">初始：<b>' + n + '</b> 个 ' + fmt(q) +
+        ' —— 要算 <b>' + expSup(q, n) + '</b>' +
+        (n === 0 ? '，一个都不用配对，结果直接就是 <b>1</b>。' : '。点 ▶ 自动演示，看它们一轮轮两两配对、数量减半。') +
+        '</div>' + '<div class="tok-row">' + html + '</div>';
       formula.innerHTML = '<span class="dstatus">按 ▶ 自动演示 或 单步 逐帧播放</span>';
       scrollActivePageToBottom();
     }
