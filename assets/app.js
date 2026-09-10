@@ -678,10 +678,14 @@
       rows = []; idx = 0; auto = false; runB.textContent = '▶ 自动演示'; stB.textContent = '';
     }
 
+    var curKey = null;   // 当前演示用的 q|n，用来判断“点 ▶ 是暂停还是重播”
     runB.addEventListener('click', function () {
-      if (auto) { stopAll(); stB.textContent = '已暂停（点 ▶ 继续 / 单步推进）'; return; }
       var parsed;
       try { parsed = parse(); } catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
+      var key = parsed.q + '|' + parsed.n;
+      /* 参数没变：暂停/继续；参数改了：直接重播新的（否则会停在上一次的旧画面上，看着像卡住） */
+      if (auto && key === curKey) { stopAll(); stB.textContent = '已暂停（点 ▶ 继续 / 单步推进）'; return; }
+      curKey = key;
       stage.innerHTML = '';
       fin.classList.remove('show');
       rows = buildRows(parsed.q, parsed.n);
@@ -701,9 +705,12 @@
 
     stepB.addEventListener('click', function () {
       if (auto) stopAll();
-      if (!rows.length) {
-        try { var p2 = parse(); rows = buildRows(p2.q, p2.n); idx = 0; stB.textContent = '单步模式（每点一次走一步）'; }
-        catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
+      var p2, k2;
+      try { p2 = parse(); k2 = p2.q + '|' + p2.n; } catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
+      /* 没演示过、或参数改了 → 按新参数重建，否则会接着走上一轮的旧步骤 */
+      if (!rows.length || k2 !== curKey) {
+        rows = buildRows(p2.q, p2.n); idx = 0; curKey = k2;
+        stB.textContent = '单步模式（每点一次走一步）';
       }
       if (!stepOnce() && rows.length) stB.textContent = '单步模式（重按 ▶ 重播）';
     });
@@ -770,9 +777,15 @@
       if (p) p.scrollTop = p.scrollHeight;
     }
 
+    function readParams() {
+      return {
+        q: readInt(qIn, '底数 q', 0, 99, '0 ~ 99'),
+        n: readInt(nIn, '指数 n', 0, 40, '0 ~ 40', '太多屏幕放不下')
+      };
+    }
+
     function buildFrames() {
-      var q = readInt(qIn, '底数 q', 0, 99, '0 ~ 99');
-      var n = readInt(nIn, '指数 n', 0, 40, '0 ~ 40', '太多屏幕放不下');
+      var p = readParams(), q = p.q, n = p.n;
       frames = []; fidx = 0;
       stage.innerHTML = '';
       formula.innerHTML = '';
@@ -921,8 +934,14 @@
       scrollActivePageToBottom();
     }
 
+    var curKey = null;   // 当前演示用的 q|n，用来判断“点 ▶ 是暂停还是重播”
     runB.addEventListener('click', function () {
-      if (auto) { stopAll(); stB.textContent = '已暂停（点 ▶ 继续）'; return; }
+      var p;
+      try { p = readParams(); } catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
+      var key = p.q + '|' + p.n;
+      /* 参数没变：暂停/继续；参数改了：直接重播新的（否则会停在上一次的旧画面上，看着像卡住） */
+      if (auto && key === curKey) { stopAll(); stB.textContent = '已暂停（点 ▶ 继续）'; return; }
+      curKey = key;
       try { buildFrames(); } catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
       token++;
       fidx = 0;
@@ -940,9 +959,13 @@
     });
     stepB.addEventListener('click', function () {
       if (auto) stopAll();
-      if (!frames.length) {
-        try { buildFrames(); fidx = 0; stB.textContent = '单步模式（每点一次走一步）'; }
-        catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
+      var p3, k3;
+      try { p3 = readParams(); k3 = p3.q + '|' + p3.n; } catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
+      /* 没演示过、或参数改了 → 按新参数重建，否则会接着走上一轮的旧帧 */
+      if (!frames.length || k3 !== curKey) {
+        try { buildFrames(); } catch (e) { stB.textContent = ''; toast('⚠ ' + errText(e), 'warn'); return; }
+        fidx = 0; curKey = k3;
+        stB.textContent = '单步模式（每点一次走一步）';
       }
       if (!stepOnce() && frames.length) stB.textContent = '单步模式（重按 ▶ 重播）';
     });
