@@ -1,0 +1,1 @@
+window.LECTURE_RECENT=[];
