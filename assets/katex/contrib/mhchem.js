@@ -21,34 +21,25 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
 
  	});
 
- 	// The module cache
  	var __webpack_module_cache__ = {};
  	
- 	// The require function
  	function __webpack_require__(moduleId) {
- 		// Check if module is in cache
  		var cachedModule = __webpack_module_cache__[moduleId];
  		if (cachedModule !== undefined) {
  			return cachedModule.exports;
  		}
- 		// Create a new module (and put it into the cache)
  		var module = __webpack_module_cache__[moduleId] = {
- 			// no module.id needed
- 			// no module.loaded needed
  			exports: {}
  		};
  	
- 		// Execute the module function
  		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
  	
- 		// Return the exports of the module
  		return module.exports;
  	}
  	
 
  	
  	!function() {
- 		// getDefaultExport function for compatibility with non-harmony modules
  		__webpack_require__.n = function(module) {
  			var getter = module && module.__esModule ?
  				function() { return module['default']; } :
@@ -60,7 +51,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
  	
  	
  	!function() {
- 		// define getter functions for harmony exports
  		__webpack_require__.d = function(exports, definition) {
  			for(var key in definition) {
  				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
@@ -77,7 +67,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
  	
 
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
  var katex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(771);
  var katex__WEBPACK_IMPORTED_MODULE_0___default = __webpack_require__.n(katex__WEBPACK_IMPORTED_MODULE_0__);
@@ -88,12 +77,6 @@ var __webpack_exports__ = {};
 
 
 
-//
-// Coding Style
-//   - use '' for identifiers that can by minified/uglified
-//   - use "" for strings that need to stay untouched
-// version: "3.3.0" for MathJax and KaTeX
-// Add \ce, \pu, and \tripledash to the KaTeX macros.
 katex__WEBPACK_IMPORTED_MODULE_0___default().__defineMacro("\\ce", function (context) {
   return chemParse(context.consumeArgs(1)[0], "ce");
 });
@@ -101,25 +84,17 @@ katex__WEBPACK_IMPORTED_MODULE_0___default().__defineMacro("\\ce", function (con
 katex__WEBPACK_IMPORTED_MODULE_0___default().__defineMacro("\\pu", function (context) {
   return chemParse(context.consumeArgs(1)[0], "pu");
 }); //  Needed for \bond for the ~ forms
-//  Raise by 2.56mu, not 2mu. We're raising a hyphen-minus, U+002D, not 
-//  a mathematical minus, U+2212. So we need that extra 0.56.
 
 
 katex__WEBPACK_IMPORTED_MODULE_0___default().__defineMacro("\\tripledash", "{\\vphantom{-}\\raisebox{2.56mu}{$\\mkern2mu" + "\\tiny\\text{-}\\mkern1mu\\text{-}\\mkern1mu\\text{-}\\mkern2mu$}}");
 
- //
-//  This is the main function for handing the \ce and \pu commands.
-//  It takes the argument to \ce or \pu and returns the corresponding TeX string.
-//
 
 var chemParse = function (tokens, stateMachine) {
-  // Recreate the argument string from KaTeX's array of tokens.
   var str = "";
   var expectedLoc = tokens.length && tokens[tokens.length - 1].loc.start;
 
   for (var i = tokens.length - 1; i >= 0; i--) {
     if (tokens[i].loc.start > expectedLoc) {
-      // context.consumeArgs has eaten a space.
       str += " ";
       expectedLoc = tokens[i].loc.start;
     }
@@ -131,19 +106,11 @@ var chemParse = function (tokens, stateMachine) {
   var tex = texify.go(mhchemParser.go(str, stateMachine));
   return tex;
 }; //
-// Core parser for mhchem syntax  (recursive)
-//
 
 
 
 
 var mhchemParser = {
-  //
-  // Parses mchem \ce syntax
-  //
-  // Call like
-  //   go("H2O");
-  //
   go: function (input, stateMachine) {
     if (!input) {
       return [];
@@ -154,38 +121,6 @@ var mhchemParser = {
     }
 
     var state = '0'; //
-    // String buffers for parsing:
-    //
-    // buffer.a == amount
-    // buffer.o == element
-    // buffer.b == left-side superscript
-    // buffer.p == left-side subscript
-    // buffer.q == right-side subscript
-    // buffer.d == right-side superscript
-    //
-    // buffer.r == arrow
-    // buffer.rdt == arrow, script above, type
-    // buffer.rd == arrow, script above, content
-    // buffer.rqt == arrow, script below, type
-    // buffer.rq == arrow, script below, content
-    //
-    // buffer.text_
-    // buffer.rm
-    // etc.
-    //
-    // buffer.parenthesisLevel == int, starting at 0
-    // buffer.sb == bool, space before
-    // buffer.beginsWithBond == bool
-    //
-    // These letters are also used as state names.
-    //
-    // Other states:
-    // 0 == begin of main part (arrow/operator unlikely)
-    // 1 == next entity
-    // 2 == next entity (arrow/operator unlikely)
-    // 3 == next atom
-    // c == macro
-    //
 
     
 
@@ -194,9 +129,6 @@ var mhchemParser = {
     input = input.replace(/\n/g, " ");
     input = input.replace(/[\u2212\u2013\u2014\u2010]/g, "-");
     input = input.replace(/[\u2026]/g, "..."); //
-    // Looks through mhchemParser.transitions, to execute a matching action
-    // (recursive)
-    //
 
     var lastInput;
     var watchdog = 10;
@@ -211,8 +143,6 @@ var mhchemParser = {
       } else {
         watchdog--;
       } //
-      // Find actions in transition table
-      //
 
 
       var machine = mhchemParser.stateMachines[stateMachine];
@@ -222,15 +152,10 @@ var mhchemParser = {
         var matches = mhchemParser.patterns.match_(t[i].pattern, input);
 
         if (matches) {
-          //
-          // Execute actions
-          //
           var task = t[i].task;
 
           for (var iA = 0; iA < task.action_.length; iA++) {
             var o; //
-            // Find and execute action
-            //
 
             if (machine.actions[task.action_[iA].type_]) {
               o = machine.actions[task.action_[iA].type_](buffer, matches.match_, task.action_[iA].option);
@@ -239,17 +164,10 @@ var mhchemParser = {
             } else {
               throw ["MhchemBugA", "mhchem bug A. Please report. (" + task.action_[iA].type_ + ")"]; // Trying to use non-existing action
             } //
-            // Add output
-            //
 
 
             mhchemParser.concatArray(output, o);
           } //
-          // Set next state,
-          // Shorten input,
-          // Continue with next character
-          //   (= apply only one transition per position)
-          //
 
 
           state = task.nextState || state;
@@ -267,8 +185,6 @@ var mhchemParser = {
           }
         }
       } //
-      // Prevent infinite loop
-      //
 
 
       if (watchdog <= 0) {
@@ -288,12 +204,7 @@ var mhchemParser = {
     }
   },
   patterns: {
-    //
-    // Matching patterns
-    // either regexps or function that return null or {match_:"a", remainder:"bc"}
-    //
     patterns: {
-      // property names must not look like integers ("2") for correct property traversal order, later on
       'empty': /^$/,
       'else': /^./,
       'else2': /^./,
@@ -337,7 +248,6 @@ var mhchemParser = {
         return null;
       },
       'state of aggregation $': function (input) {
-        // ... or crystal system
         var a = mhchemParser.patterns.findObserveGroups(input, "", /^\([a-z]{1,3}(?=[\),])/, ")", ""); // (aq), (aq,$\infty$), (aq, sat)
 
         if (a && a.remainder.match(/^($|[\s,;\)\]\}])/)) {
@@ -416,7 +326,6 @@ var mhchemParser = {
       '#': /^[#\u2261]/,
       '+': /^\+/,
       '-$': /^-(?=[\s_},;\]/]|$|\([a-z]+\))/,
-      // -space -, -; -] -/ -$ -state-of-aggregation
       '-9': /^-(?=[0-9])/,
       '- orbital overlap': /^-(?=(?:[spd]|sp)(?:$|[\s,;\)\]\}]))/,
       '-': /^-/,
@@ -433,7 +342,6 @@ var mhchemParser = {
       },
       '1st-level escape': /^(&|\\\\|\\hline)\s*/,
       '\\,': /^(?:\\[,\ ;:])/,
-      // \\x - but output no space before
       '\\x{}{}': function (input) {
         return mhchemParser.patterns.findObserveGroups(input, "", /^\\[a-zA-Z]+\{/, "}", "", "", "{", "}", "", true);
       },
@@ -443,7 +351,6 @@ var mhchemParser = {
       '\\ca': /^\\ca(?:\s+|(?![a-zA-Z]))/,
       '\\x': /^(?:\\[a-zA-Z]+\s*|\\[_&{}%])/,
       'orbital': /^(?:[0-9]{1,2}[spdfgh]|[0-9]{0,2}sp)(?=$|[^a-zA-Z])/,
-      // only those with numbers in front, because the others will be formatted correctly anyway
       'others': /^[\/~|]/,
       '\\frac{(...)}': function (input) {
         return mhchemParser.patterns.findObserveGroups(input, "\\frac{", "", "", "}", "{", "", "", "}");
@@ -471,7 +378,6 @@ var mhchemParser = {
       },
       'oxidation$': /^(?:[+-][IVX]+|\\pm\s*0|\$\\pm\$\s*0)$/,
       'd-oxidation$': /^(?:[+-]?\s?[IVX]+|\\pm\s*0|\$\\pm\$\s*0)$/,
-      // 0 could be oxidation or charge
       'roman numeral': /^[IVX]+/,
       '1/2$': /^[+\-]?(?:[0-9]+|\$[a-z]\$|[a-z])\/[0-9]+(?:\$[a-z]\$|[a-z])?$/,
       'amount': function (input) {
@@ -489,7 +395,6 @@ var mhchemParser = {
         var a = mhchemParser.patterns.findObserveGroups(input, "", "$", "$", "");
 
         if (a) {
-          // e.g. $2n-1$, $-$
           match = a.match_.match(/^\$(?:\(?[+\-]?(?:[0-9]*[a-z]?[+\-])?[0-9]*[a-z](?:[+\-][0-9]*[a-z]?)?\)?|\+|-)\$$/);
 
           if (match) {
@@ -625,11 +530,6 @@ var mhchemParser = {
         };
       }
     },
-    //
-    // Matching function
-    // e.g. match("a", input) will look for the regexp called "a" and see if it matches
-    // returns null or {match_:"a", remainder:"bc"}
-    //
     match_: function (m, input) {
       var pattern = mhchemParser.patterns.patterns[m];
 
@@ -638,7 +538,6 @@ var mhchemParser = {
       } else if (typeof pattern === "function") {
         return mhchemParser.patterns.patterns[m](input); // cannot use cached var pattern here, because some pattern functions need this===mhchemParser
       } else {
-        // RegExp
         var match = input.match(pattern);
 
         if (match) {
@@ -662,9 +561,6 @@ var mhchemParser = {
       }
     }
   },
-  //
-  // Generic state machine actions
-  //
   actions: {
     'a=': function (buffer, m) {
       buffer.a = (buffer.a || "") + m;
@@ -778,19 +674,12 @@ var mhchemParser = {
       return mhchemParser.go(m, '9,9');
     }
   },
-  //
-  // createTransitions
-  // convert  { 'letter': { 'state': { action_: 'output' } } }  to  { 'state' => [ { pattern: 'letter', task: { action_: [{type_: 'output'}] } } ] }
-  // with expansion of 'a|b' to 'a' and 'b' (at 2 places)
-  //
   createTransitions: function (o) {
     var pattern, state;
     
 
     var stateArray;
     var i; //
-    // 1. Collect all states
-    //
 
     
 
@@ -806,8 +695,6 @@ var mhchemParser = {
         }
       }
     } //
-    // 2. Fill states
-    //
 
 
     for (pattern in o) {
@@ -815,10 +702,6 @@ var mhchemParser = {
         stateArray = o[pattern][state].stateArray || [];
 
         for (i = 0; i < stateArray.length; i++) {
-          //
-          // 2a. Normalize actions into array:  'text=' ==> [{type_:'text='}]
-          // (Note to myself: Resolving the function here would be problematic. It would need .bind (for *this*) and currying (for *option*).)
-          //
 
           
           var p = o[pattern][state];
@@ -836,15 +719,12 @@ var mhchemParser = {
           } else {
             p.action_ = [];
           } //
-          // 2.b Multi-insert
-          //
 
 
           var patternArray = pattern.split("|");
 
           for (var j = 0; j < patternArray.length; j++) {
             if (stateArray[i] === '*') {
-              // insert into all
               for (var t in transitions) {
                 transitions[t].push({
                   pattern: patternArray[j],
@@ -866,16 +746,9 @@ var mhchemParser = {
   },
   stateMachines: {}
 }; //
-// Definition of state machines
-//
 
 mhchemParser.stateMachines = {
-  //
-  // \ce state machines
-  //
-  //#region ce
   'ce': {
-    // main parser
     transitions: mhchemParser.createTransitions({
       'empty': {
         '*': {
@@ -1256,7 +1129,6 @@ mhchemParser.stateMachines = {
         }
       },
       '^_': {
-        // ^ and _ without a sensible argument
         '*': {}
       },
       '^{(...)}|^($...$)': {
@@ -1378,12 +1250,10 @@ mhchemParser.stateMachines = {
         'a': {
           action_: 'a='
         },
-        // 2$n$
         '0|1|2|3|as|b|p|bp|o': {
           action_: 'o=',
           nextState: 'o'
         },
-        // not 'amount'
         'as|o': {
           action_: 'o='
         },
@@ -1623,10 +1493,6 @@ mhchemParser.stateMachines = {
         }
       },
       'output': function (buffer, m, entityFollows) {
-        // entityFollows:
-        //   undefined = if we have nothing else to output, also ignore the just read space (buffer.sb)
-        //   1 = an entity follows, never omit the space if there was one just read before (can only apply to state 1)
-        //   2 = 1 + the entity can have an amount, so output a\, instead of converting it to o (can only apply to states a|as)
 
         
         var ret;
@@ -1670,7 +1536,6 @@ mhchemParser.stateMachines = {
             });
           }
         } else {
-          // r
 
           
           var rd;
@@ -2288,11 +2153,6 @@ mhchemParser.stateMachines = {
       }
     }
   },
-  //#endregion
-  //
-  // \pu state machines
-  //
-  //#region pu
   'pu': {
     transitions: mhchemParser.createTransitions({
       'empty': {
@@ -2458,7 +2318,6 @@ mhchemParser.stateMachines = {
         }
 
         if (buffer.q) {
-          // fraction
           buffer.q = buffer.q.replace(/\u00B0C|\^oC|\^{o}C/g, "{}^{\\circ}C");
           buffer.q = buffer.q.replace(/\u00B0F|\^oF|\^{o}F/g, "{}^{\\circ}F");
           var b5 = {
@@ -2488,7 +2347,6 @@ mhchemParser.stateMachines = {
             mhchemParser.concatArray(ret, b5.q);
           }
         } else {
-          // no fraction
           ret = mhchemParser.go(buffer.d, 'pu-2');
         }
 
@@ -2680,14 +2538,11 @@ mhchemParser.stateMachines = {
   } //#endregion
 
 }; //
-// texify: Take MhchemParser output and convert it to TeX
-//
 
 
 
 var texify = {
   go: function (input, isInner) {
-    // (recursive, max 4 levels)
     if (!input) {
       return "";
     }
@@ -2737,8 +2592,6 @@ var texify = {
           q: texify._goInner(buf.q),
           d: texify._goInner(buf.d)
         }; //
-        // a
-        //
 
         if (b5.a) {
           if (b5.a.match(/^[+\-]/)) {
@@ -2747,8 +2600,6 @@ var texify = {
 
           res += b5.a + "\\,";
         } //
-        // b and p
-        //
 
 
         if (b5.b || b5.p) {
@@ -2758,8 +2609,6 @@ var texify = {
           res += "^{\\smash[t]{\\vphantom{2}}\\mathllap{" + (b5.b || "") + "}}";
           res += "_{\\vphantom{2}\\mathllap{\\smash[t]{" + (b5.p || "") + "}}}";
         } //
-        // o
-        //
 
 
         if (b5.o) {
@@ -2769,8 +2618,6 @@ var texify = {
 
           res += b5.o;
         } //
-        // q and d
-        //
 
 
         if (buf.dType === 'kv') {
@@ -3007,7 +2854,6 @@ var texify = {
       default:
         assertNever(buf);
         throw ["MhchemBugT", "mhchem bug T. Please report."];
-      // Missing texify rule or unknown MhchemParser output
     }
 
     assertString(res);
@@ -3158,9 +3004,6 @@ var texify = {
     }
   }
 }; //
-// Helpers for code analysis
-// Will show type error at calling position
-//
 
 
 

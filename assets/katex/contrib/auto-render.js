@@ -21,34 +21,25 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
 
  	});
 
- 	// The module cache
  	var __webpack_module_cache__ = {};
  	
- 	// The require function
  	function __webpack_require__(moduleId) {
- 		// Check if module is in cache
  		var cachedModule = __webpack_module_cache__[moduleId];
  		if (cachedModule !== undefined) {
  			return cachedModule.exports;
  		}
- 		// Create a new module (and put it into the cache)
  		var module = __webpack_module_cache__[moduleId] = {
- 			// no module.id needed
- 			// no module.loaded needed
  			exports: {}
  		};
  	
- 		// Execute the module function
  		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
  	
- 		// Return the exports of the module
  		return module.exports;
  	}
  	
 
  	
  	!function() {
- 		// getDefaultExport function for compatibility with non-harmony modules
  		__webpack_require__.n = function(module) {
  			var getter = module && module.__esModule ?
  				function() { return module['default']; } :
@@ -60,7 +51,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
  	
  	
  	!function() {
- 		// define getter functions for harmony exports
  		__webpack_require__.d = function(exports, definition) {
  			for(var key in definition) {
  				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
@@ -77,22 +67,17 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
  	
 
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
 
-// EXPORTS
 __webpack_require__.d(__webpack_exports__, {
   "default": function() { return  auto_render; }
 });
 
-// EXTERNAL MODULE: external "katex"
 var external_katex_ = __webpack_require__(771);
 var external_katex_default = __webpack_require__.n(external_katex_);
 ;// CONCATENATED MODULE: ./contrib/auto-render/splitAtDelimiters.js
 
 const findEndOfMath = function (delimiter, text, startIndex) {
-  // Adapted from
-  // https://github.com/Khan/perseus/blob/master/src/perseus-markdown.jsx
   let index = startIndex;
   let braceLevel = 0;
   const delimLength = delimiter.length;
@@ -182,9 +167,6 @@ const renderMathInText = function (text, optionsCopy) {
   const data = auto_render_splitAtDelimiters(text, optionsCopy.delimiters);
 
   if (data.length === 1 && data[0].type === 'text') {
-    // There is no formula in the text.
-    // Let's return null which means there is no need to replace
-    // the current text node with a new one.
     return null;
   }
 
@@ -196,7 +178,6 @@ const renderMathInText = function (text, optionsCopy) {
     } else {
       const span = document.createElement("span");
       let math = data[i].data; // Override any display mode defined in the settings with that
-      // defined by the text itself
 
       optionsCopy.displayMode = data[i].display;
 
@@ -228,10 +209,6 @@ const renderElem = function (elem, optionsCopy) {
     const childNode = elem.childNodes[i];
 
     if (childNode.nodeType === 3) {
-      // Text node
-      // Concatenate all sibling text nodes.
-      // Webkit browsers split very large text nodes into smaller ones,
-      // so the delimiters may be split across different nodes.
       let textContentConcat = childNode.textContent;
       let sibling = childNode.nextSibling;
       let nSiblings = 0;
@@ -245,7 +222,6 @@ const renderElem = function (elem, optionsCopy) {
       const frag = renderMathInText(textContentConcat, optionsCopy);
 
       if (frag) {
-        // Remove extra text nodes
         for (let j = 0; j < nSiblings; j++) {
           childNode.nextSibling.remove();
         }
@@ -253,12 +229,9 @@ const renderElem = function (elem, optionsCopy) {
         i += frag.childNodes.length - 1;
         elem.replaceChild(frag, childNode);
       } else {
-        // If the concatenated text does not contain math
-        // the siblings will not either
         i += nSiblings;
       }
     } else if (childNode.nodeType === 1) {
-      // Element node
       const className = ' ' + childNode.className + ' ';
       const shouldRender = optionsCopy.ignoredTags.indexOf(childNode.nodeName.toLowerCase()) === -1 && optionsCopy.ignoredClasses.every(x => className.indexOf(' ' + x + ' ') === -1);
 
@@ -293,9 +266,6 @@ const renderMathInElement = function (elem, options) {
     right: "\\)",
     display: false
   }, // LaTeX uses $…$, but it ruins the display of normal `$` in text:
-  // {left: "$", right: "$", display: false},
-  // $ must come after $$
-  // Render AMS environments even if outside $$…$$ delimiters.
   {
     left: "\\begin{equation}",
     right: "\\end{equation}",
@@ -324,7 +294,6 @@ const renderMathInElement = function (elem, options) {
   optionsCopy.ignoredTags = optionsCopy.ignoredTags || ["script", "noscript", "style", "textarea", "pre", "code", "option"];
   optionsCopy.ignoredClasses = optionsCopy.ignoredClasses || [];
   optionsCopy.errorCallback = optionsCopy.errorCallback || console.error; // Enable sharing of global macros defined via `\gdef` between different
-  // math elements within a single call to `renderMathInElement`.
 
   optionsCopy.macros = optionsCopy.macros || {};
   renderElem(elem, optionsCopy);

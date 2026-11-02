@@ -21,34 +21,25 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
 
  	});
 
- 	// The module cache
  	var __webpack_module_cache__ = {};
  	
- 	// The require function
  	function __webpack_require__(moduleId) {
- 		// Check if module is in cache
  		var cachedModule = __webpack_module_cache__[moduleId];
  		if (cachedModule !== undefined) {
  			return cachedModule.exports;
  		}
- 		// Create a new module (and put it into the cache)
  		var module = __webpack_module_cache__[moduleId] = {
- 			// no module.id needed
- 			// no module.loaded needed
  			exports: {}
  		};
  	
- 		// Execute the module function
  		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
  	
- 		// Return the exports of the module
  		return module.exports;
  	}
  	
 
  	
  	!function() {
- 		// getDefaultExport function for compatibility with non-harmony modules
  		__webpack_require__.n = function(module) {
  			var getter = module && module.__esModule ?
  				function() { return module['default']; } :
@@ -60,7 +51,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
  	
  	
  	!function() {
- 		// define getter functions for harmony exports
  		__webpack_require__.d = function(exports, definition) {
  			for(var key in definition) {
  				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
@@ -77,14 +67,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
  	
 
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
  var katex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(771);
  var katex__WEBPACK_IMPORTED_MODULE_0___default = __webpack_require__.n(katex__WEBPACK_IMPORTED_MODULE_0__);
 
-// NOTE: since we're importing types here these files won't actually be
-// included in the build.
-// $FlowIgnore: we import the types directly anyways
 
 const stringMap = {
   "(": "left parenthesis",
@@ -155,7 +141,6 @@ const stringMap = {
   "\\nabla": "del",
   "\\ell": "ell",
   "\\ldots": "dots",
-  // TODO: add entries for all accents
   "\\hat": "hat",
   "\\acute": "acute"
 };
@@ -229,14 +214,9 @@ const buildString = (str, type, a11yStrings) => {
   } else {
     ret = stringMap[str] || str;
   } // If the text to add is a number and there is already a string
-  // in the list and the last string is a number then we should
-  // combine them into a single number
 
 
   if (/^\d+$/.test(ret) && a11yStrings.length > 0 && // TODO(kevinb): check that the last item in a11yStrings is a string
-  // I think we might be able to drop the nested arrays, which would make
-  // this easier to type
-  // $FlowFixMe
   /^\d+$/.test(a11yStrings[a11yStrings.length - 1])) {
     a11yStrings[a11yStrings.length - 1] += ret;
   } else if (ret) {
@@ -251,7 +231,6 @@ const buildRegion = (a11yStrings, callback) => {
 };
 
 const handleObject = (tree, a11yStrings, atomType) => {
-  // Everything else is assumed to be an object...
   switch (tree.type) {
     case "accent":
       {
@@ -277,7 +256,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "accent-token":
       {
-        // Used internally by accent symbols.
         break;
       }
 
@@ -299,7 +277,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
               buildString(text, "close", a11yStrings);
               break;
             }
-          // TODO(kevinb): figure out what should be done for inner
 
           case "inner":
             {
@@ -348,8 +325,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "color-token":
       {
-        // Used by \color, \colorbox, and \fcolorbox but not directly rendered.
-        // It's a leaf node and has no children so just break.
         break;
       }
 
@@ -365,12 +340,10 @@ const handleObject = (tree, a11yStrings, atomType) => {
     case "genfrac":
       {
         buildRegion(a11yStrings, regionStrings => {
-          // genfrac can have unbalanced delimiters
           const {
             leftDelim,
             rightDelim
           } = tree; // NOTE: Not sure if this is a safe assumption
-          // hasBarLine true -> fraction, false -> binomial
 
           if (tree.hasBarLine) {
             regionStrings.push("start fraction");
@@ -401,8 +374,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "kern":
       {
-        // No op: we don't attempt to present kerning information
-        // to the screen reader.
         break;
       }
 
@@ -418,7 +389,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "leftright-right":
       {
-        // TODO: double check that this is a no-op
         break;
       }
 
@@ -452,7 +422,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "op-token":
       {
-        // Used internally by operator symbols.
         buildString(tree.text, atomType, a11yStrings);
         break;
       }
@@ -511,7 +480,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "styling":
       {
-        // We ignore the styling and just pass through the contents
         buildA11yStrings(tree.body, a11yStrings, atomType);
         break;
       }
@@ -591,7 +559,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "text":
       {
-        // TODO: handle other fonts
         if (tree.font === "\\textbf") {
           buildRegion(a11yStrings, function (regionStrings) {
             regionStrings.push("start bold text");
@@ -623,9 +590,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "enclose":
       {
-        // TODO: create a map for these.
-        // TODO: differentiate between a body with a single atom, e.g.
-        // "cancel a" instead of "start cancel, a, end cancel"
         if (/cancel/.test(tree.label)) {
           buildRegion(a11yStrings, function (regionStrings) {
             regionStrings.push("start cancel");
@@ -693,8 +657,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "size":
       {
-        // Although there are nodes of type "size" in the parse tree, they have
-        // no semantic meaning and should be ignored.
         break;
       }
 
@@ -731,7 +693,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "infix":
       {
-        // All infix nodes are replace with other nodes.
         break;
       }
 
@@ -742,8 +703,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "font":
       {
-        // TODO: callout the start/end of specific fonts
-        // TODO: map \BBb{N} to "the naturals" or something like that
         buildA11yStrings(tree.body, a11yStrings, atomType);
         break;
       }
@@ -755,7 +714,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "cr":
       {
-        // This is used by environments.
         throw new Error("KaTeX-a11y: cr not implemented yet");
       }
 
@@ -786,8 +744,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "mclass":
       {
-        // \neq and \ne are macros so we let "htmlmathml" render the mathmal
-        // side of things and extract the text from that.
         const atomType = tree.mclass.slice(1); // $FlowFixMe: drop the leading "m" from the values in mclass
 
         buildA11yStrings(tree.body, a11yStrings, atomType);
@@ -796,8 +752,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "mathchoice":
       {
-        // TODO: track which style we're using, e.g. display, text, etc.
-        // default to text style if even that may not be the correct style
         buildA11yStrings(tree.text, a11yStrings, atomType);
         break;
       }
@@ -816,7 +770,6 @@ const handleObject = (tree, a11yStrings, atomType) => {
 
     case "internal":
       {
-        // internal nodes are never included in the parse tree
         break;
       }
 
