@@ -8,125 +8,86 @@
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
 })((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__771__) {
-return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
+return  (function() { // webpackBootstrap
+ 	"use strict";
+ 	var __webpack_modules__ = ({
 
-/***/ 771:
-/***/ (function(module) {
+ 771:
+ (function(module) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
 
-/***/ })
+ })
 
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
-/******/ 	
-/************************************************************************/
+ 	});
+
+ 	// The module cache
+ 	var __webpack_module_cache__ = {};
+ 	
+ 	// The require function
+ 	function __webpack_require__(moduleId) {
+ 		// Check if module is in cache
+ 		var cachedModule = __webpack_module_cache__[moduleId];
+ 		if (cachedModule !== undefined) {
+ 			return cachedModule.exports;
+ 		}
+ 		// Create a new module (and put it into the cache)
+ 		var module = __webpack_module_cache__[moduleId] = {
+ 			// no module.id needed
+ 			// no module.loaded needed
+ 			exports: {}
+ 		};
+ 	
+ 		// Execute the module function
+ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+ 	
+ 		// Return the exports of the module
+ 		return module.exports;
+ 	}
+ 	
+
+ 	
+ 	!function() {
+ 		// getDefaultExport function for compatibility with non-harmony modules
+ 		__webpack_require__.n = function(module) {
+ 			var getter = module && module.__esModule ?
+ 				function() { return module['default']; } :
+ 				function() { return module; };
+ 			__webpack_require__.d(getter, { a: getter });
+ 			return getter;
+ 		};
+ 	}();
+ 	
+ 	
+ 	!function() {
+ 		// define getter functions for harmony exports
+ 		__webpack_require__.d = function(exports, definition) {
+ 			for(var key in definition) {
+ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+ 				}
+ 			}
+ 		};
+ 	}();
+ 	
+ 	
+ 	!function() {
+ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+ 	}();
+ 	
+
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
-/* harmony import */ var katex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(771);
-/* harmony import */ var katex__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(katex__WEBPACK_IMPORTED_MODULE_0__);
-/* eslint-disable */
+ var katex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(771);
+ var katex__WEBPACK_IMPORTED_MODULE_0___default = __webpack_require__.n(katex__WEBPACK_IMPORTED_MODULE_0__);
 
-/* -*- Mode: JavaScript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
 
-/* vim: set ts=2 et sw=2 tw=80: */
 
-/*************************************************************
- *
- *  KaTeX mhchem.js
- *
- *  This file implements a KaTeX version of mhchem version 3.3.0.
- *  It is adapted from MathJax/extensions/TeX/mhchem.js
- *  It differs from the MathJax version as follows:
- *    1. The interface is changed so that it can be called from KaTeX, not MathJax.
- *    2. \rlap and \llap are replaced with \mathrlap and \mathllap.
- *    3. Four lines of code are edited in order to use \raisebox instead of \raise.
- *    4. The reaction arrow code is simplified. All reaction arrows are rendered
- *       using KaTeX extensible arrows instead of building non-extensible arrows.
- *    5. \tripledash vertical alignment is slightly adjusted.
- *
- *    This code, as other KaTeX code, is released under the MIT license.
- * 
- * /*************************************************************
- *
- *  MathJax/extensions/TeX/mhchem.js
- *
- *  Implements the \ce command for handling chemical formulas
- *  from the mhchem LaTeX package.
- *
- *  ---------------------------------------------------------------------
- *
- *  Copyright (c) 2011-2015 The MathJax Consortium
- *  Copyright (c) 2015-2018 Martin Hensel
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
+
+
+
+
 //
 // Coding Style
 //   - use '' for identifiers that can by minified/uglified
@@ -173,7 +134,7 @@ var chemParse = function (tokens, stateMachine) {
 // Core parser for mhchem syntax  (recursive)
 //
 
-/** @type {MhchemParser} */
+
 
 
 var mhchemParser = {
@@ -226,7 +187,7 @@ var mhchemParser = {
     // c == macro
     //
 
-    /** @type {Buffer} */
+    
 
     var buffer = {};
     buffer['parenthesisLevel'] = 0;
@@ -239,7 +200,7 @@ var mhchemParser = {
 
     var lastInput;
     var watchdog = 10;
-    /** @type {ParserOutput[]} */
+    
 
     var output = [];
 
@@ -568,7 +529,7 @@ var mhchemParser = {
       '*': /^\s*[*.]\s*/
     },
     findObserveGroups: function (input, begExcl, begIncl, endIncl, endExcl, beg2Excl, beg2Incl, end2Incl, end2Excl, combine) {
-      /** @type {{(input: string, pattern: string | RegExp): string | string[] | null;}} */
+      
       var _match = function (input, pattern) {
         if (typeof pattern === "string") {
           if (input.indexOf(pattern) !== 0) {
@@ -586,7 +547,7 @@ var mhchemParser = {
           return match[0];
         }
       };
-      /** @type {{(input: string, i: number, endChars: string | RegExp): {endMatchBegin: number, endMatchEnd: number} | null;}} */
+      
 
 
       var _findObserveGroups = function (input, i, endChars) {
@@ -654,7 +615,7 @@ var mhchemParser = {
         if (group2 === null) {
           return null;
         }
-        /** @type {string[]} */
+        
 
 
         var matchRet = [match1, group2.match_];
@@ -787,7 +748,7 @@ var mhchemParser = {
       return mhchemParser.go(m);
     },
     '1/2': function (buffer, m) {
-      /** @type {ParserOutput[]} */
+      
       var ret = [];
 
       if (m.match(/^[+\-]/)) {
@@ -824,14 +785,14 @@ var mhchemParser = {
   //
   createTransitions: function (o) {
     var pattern, state;
-    /** @type {string[]} */
+    
 
     var stateArray;
     var i; //
     // 1. Collect all states
     //
 
-    /** @type {Transitions} */
+    
 
     var transitions = {};
 
@@ -859,7 +820,7 @@ var mhchemParser = {
           // (Note to myself: Resolving the function here would be problematic. It would need .bind (for *this*) and currying (for *option*).)
           //
 
-          /** @type {any} */
+          
           var p = o[pattern][state];
 
           if (p.action_) {
@@ -1574,7 +1535,7 @@ mhchemParser.stateMachines = {
       },
       'charge or bond': function (buffer, m) {
         if (buffer['beginsWithBond']) {
-          /** @type {ParserOutput[]} */
+          
           var ret = [];
           mhchemParser.concatArray(ret, this['output'](buffer));
           mhchemParser.concatArray(ret, mhchemParser.actions['bond'](buffer, m, "-"));
@@ -1593,7 +1554,7 @@ mhchemParser.stateMachines = {
         if (hyphenFollows && !buffer.a && !buffer.b && !buffer.p && !buffer.d && !buffer.q && !c1 && c3) {
           buffer.o = '$' + buffer.o + '$';
         }
-        /** @type {ParserOutput[]} */
+        
 
 
         var ret = [];
@@ -1667,7 +1628,7 @@ mhchemParser.stateMachines = {
         //   1 = an entity follows, never omit the space if there was one just read before (can only apply to state 1)
         //   2 = 1 + the entity can have an amount, so output a\, instead of converting it to o (can only apply to states a|as)
 
-        /** @type {ParserOutput | ParserOutput[]} */
+        
         var ret;
 
         if (!buffer.r) {
@@ -1711,7 +1672,7 @@ mhchemParser.stateMachines = {
         } else {
           // r
 
-          /** @type {ParserOutput[]} */
+          
           var rd;
 
           if (buffer.rdt === 'M') {
@@ -1724,7 +1685,7 @@ mhchemParser.stateMachines = {
           } else {
             rd = mhchemParser.go(buffer.rd);
           }
-          /** @type {ParserOutput[]} */
+          
 
 
           var rq;
@@ -1946,7 +1907,7 @@ mhchemParser.stateMachines = {
     actions: {
       'output': function (buffer) {
         if (buffer.text_) {
-          /** @type {ParserOutput} */
+          
           var ret = {
             type_: 'text',
             p1: buffer.text_
@@ -2239,7 +2200,7 @@ mhchemParser.stateMachines = {
     actions: {
       'output': function (buffer) {
         if (buffer.o) {
-          /** @type {ParserOutput} */
+          
           var ret = {
             type_: 'tex-math',
             p1: buffer.o
@@ -2288,7 +2249,7 @@ mhchemParser.stateMachines = {
       },
       'output': function (buffer) {
         if (buffer.o) {
-          /** @type {ParserOutput} */
+          
           var ret = {
             type_: 'tex-math',
             p1: buffer.o
@@ -2408,7 +2369,7 @@ mhchemParser.stateMachines = {
     }),
     actions: {
       'enumber': function (buffer, m) {
-        /** @type {ParserOutput[]} */
+        
         var ret = [];
 
         if (m[0] === "+-" || m[0] === "+/-") {
@@ -2452,7 +2413,7 @@ mhchemParser.stateMachines = {
         return ret;
       },
       'number^': function (buffer, m) {
-        /** @type {ParserOutput[]} */
+        
         var ret = [];
 
         if (m[0] === "+-" || m[0] === "+/-") {
@@ -2477,7 +2438,7 @@ mhchemParser.stateMachines = {
         };
       },
       'output': function (buffer) {
-        /** @type {ParserOutput | ParserOutput[]} */
+        
         var ret;
         var md = mhchemParser.patterns.match_('{(...)}', buffer.d || "");
 
@@ -2600,7 +2561,7 @@ mhchemParser.stateMachines = {
         };
       },
       'output': function (buffer) {
-        /** @type {ParserOutput | ParserOutput[]} */
+        
         var ret = [];
 
         if (buffer.rm) {
@@ -2659,7 +2620,7 @@ mhchemParser.stateMachines = {
         };
       },
       'output-0': function (buffer) {
-        /** @type {ParserOutput[]} */
+        
         var ret = [];
         buffer.text_ = buffer.text_ || "";
 
@@ -2690,7 +2651,7 @@ mhchemParser.stateMachines = {
         return ret;
       },
       'output-o': function (buffer) {
-        /** @type {ParserOutput[]} */
+        
         var ret = [];
         buffer.text_ = buffer.text_ || "";
 
@@ -2722,7 +2683,7 @@ mhchemParser.stateMachines = {
 // texify: Take MhchemParser output and convert it to TeX
 //
 
-/** @type {Texify} */
+
 
 var texify = {
   go: function (input, isInner) {
@@ -2762,7 +2723,7 @@ var texify = {
     return texify.go(input, true);
   },
   _go2: function (buf) {
-    /** @type {undefined | string} */
+    
     var res;
 
     switch (buf.type_) {
@@ -3201,16 +3162,16 @@ var texify = {
 // Will show type error at calling position
 //
 
-/** @param {number} a */
+
 
 function assertNever(a) {}
-/** @param {string} a */
+
 
 
 function assertString(a) {}
 }();
 __webpack_exports__ = __webpack_exports__["default"];
-/******/ 	return __webpack_exports__;
-/******/ })()
+ 	return __webpack_exports__;
+ })()
 ;
 });

@@ -8,88 +8,88 @@
 	else
 		root["renderMathInElement"] = factory(root["katex"]);
 })((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__771__) {
-return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
+return  (function() { // webpackBootstrap
+ 	"use strict";
+ 	var __webpack_modules__ = ({
 
-/***/ 771:
-/***/ (function(module) {
+ 771:
+ (function(module) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__771__;
 
-/***/ })
+ })
 
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
-/******/ 	
-/************************************************************************/
+ 	});
+
+ 	// The module cache
+ 	var __webpack_module_cache__ = {};
+ 	
+ 	// The require function
+ 	function __webpack_require__(moduleId) {
+ 		// Check if module is in cache
+ 		var cachedModule = __webpack_module_cache__[moduleId];
+ 		if (cachedModule !== undefined) {
+ 			return cachedModule.exports;
+ 		}
+ 		// Create a new module (and put it into the cache)
+ 		var module = __webpack_module_cache__[moduleId] = {
+ 			// no module.id needed
+ 			// no module.loaded needed
+ 			exports: {}
+ 		};
+ 	
+ 		// Execute the module function
+ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+ 	
+ 		// Return the exports of the module
+ 		return module.exports;
+ 	}
+ 	
+
+ 	
+ 	!function() {
+ 		// getDefaultExport function for compatibility with non-harmony modules
+ 		__webpack_require__.n = function(module) {
+ 			var getter = module && module.__esModule ?
+ 				function() { return module['default']; } :
+ 				function() { return module; };
+ 			__webpack_require__.d(getter, { a: getter });
+ 			return getter;
+ 		};
+ 	}();
+ 	
+ 	
+ 	!function() {
+ 		// define getter functions for harmony exports
+ 		__webpack_require__.d = function(exports, definition) {
+ 			for(var key in definition) {
+ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+ 				}
+ 			}
+ 		};
+ 	}();
+ 	
+ 	
+ 	!function() {
+ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+ 	}();
+ 	
+
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "default": function() { return /* binding */ auto_render; }
+  "default": function() { return  auto_render; }
 });
 
 // EXTERNAL MODULE: external "katex"
 var external_katex_ = __webpack_require__(771);
-var external_katex_default = /*#__PURE__*/__webpack_require__.n(external_katex_);
+var external_katex_default = __webpack_require__.n(external_katex_);
 ;// CONCATENATED MODULE: ./contrib/auto-render/splitAtDelimiters.js
-/* eslint no-constant-condition:0 */
+
 const findEndOfMath = function (delimiter, text, startIndex) {
   // Adapted from
   // https://github.com/Khan/perseus/blob/master/src/perseus-markdown.jsx
@@ -171,14 +171,12 @@ const splitAtDelimiters = function (text, delimiters) {
   return data;
 };
 
-/* harmony default export */ var auto_render_splitAtDelimiters = (splitAtDelimiters);
+ var auto_render_splitAtDelimiters = (splitAtDelimiters);
 ;// CONCATENATED MODULE: ./contrib/auto-render/auto-render.js
-/* eslint no-console:0 */
 
 
-/* Note: optionsCopy is mutated by this method. If it is ever exposed in the
- * API, we should copy it before mutating.
- */
+
+
 
 const renderMathInText = function (text, optionsCopy) {
   const data = auto_render_splitAtDelimiters(text, optionsCopy.delimiters);
@@ -332,10 +330,10 @@ const renderMathInElement = function (elem, options) {
   renderElem(elem, optionsCopy);
 };
 
-/* harmony default export */ var auto_render = (renderMathInElement);
+ var auto_render = (renderMathInElement);
 }();
 __webpack_exports__ = __webpack_exports__["default"];
-/******/ 	return __webpack_exports__;
-/******/ })()
+ 	return __webpack_exports__;
+ })()
 ;
 });

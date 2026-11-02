@@ -8,8 +8,8 @@
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
 })((typeof self !== 'undefined' ? self : this), function() {
-return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+return  (function() { // webpackBootstrap
+ 	"use strict";
 var __webpack_exports__ = {};
 
 ;// CONCATENATED MODULE: ./contrib/copy-tex/katex2tex.js
@@ -71,7 +71,7 @@ function katexReplaceWithTex(fragment, copyDelimiters) {
 
   return fragment;
 }
-/* harmony default export */ var katex2tex = (katexReplaceWithTex);
+ var katex2tex = (katexReplaceWithTex);
 ;// CONCATENATED MODULE: ./contrib/copy-tex/copy-tex.js
  // Return <div class="katex"> element containing node, or null if not found.
 
@@ -121,7 +121,7 @@ document.addEventListener('copy', function (event) {
   event.preventDefault();
 });
 __webpack_exports__ = __webpack_exports__["default"];
-/******/ 	return __webpack_exports__;
-/******/ })()
+ 	return __webpack_exports__;
+ })()
 ;
 });
