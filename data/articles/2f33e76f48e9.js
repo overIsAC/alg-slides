@@ -1,1 +1,1 @@
-(window.LART=window.LART||{})["杂项/标准库/STL函数/最值"]="<h1>max</h1>\n<h1>min</h1>";
+(window.LART=window.LART||{})["杂项/标准库/STL函数/最值"]="<h1>max</h1>\n<h1>min</h1>\n<h1>可变参数</h1>\n<p>如果需要多个值取最值，使用花括号括起来。这是<code>C++11</code>的语法。</p>\n<pre><code class=\"language-cpp\">cout &lt;&lt; max({a,b,c,d});\n</code></pre>";
