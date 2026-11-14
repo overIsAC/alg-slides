@@ -1,1 +1,1 @@
-(window.LART=window.LART||{})["复杂数据结构/平衡树/Treap"]="<h1>旋转</h1>\n<h1>随机数</h1>";
+(window.LART=window.LART||{})["复杂数据结构/平衡树/Treap"]="<h1>应用</h1>\n\n<ul>\n<li><a class=\"wiki-link\" href=\"#树论/动态树\" data-rel=\"树论/动态树\" title=\"树论/动态树\">动态树</a></li>\n</ul>\n\n<h1>旋转</h1>\n<h1>随机数</h1>";
